@@ -1,47 +1,50 @@
 package com.example.tunehubs
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.tunehubs.ui.theme.TuneHubsTheme
+import androidx.lifecycle.ViewModelProvider
+import com.example.tunehub.viewmodel.MusicViewModel
+import com.google.gson.GsonBuilder
 
 class MainActivity : ComponentActivity() {
+    private lateinit var viewModel: MusicViewModel
+    private lateinit var resultTextView: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            TuneHubsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+        setContentView(R.layout.activity_main)
+
+        viewModel = ViewModelProvider(this)[MusicViewModel::class.java]
+        resultTextView = findViewById(R.id.resultTextView)
+
+        findViewById<Button>(R.id.fetchDataButton).setOnClickListener {
+            resultTextView.text = "Загрузка данных..."
+            viewModel.loadTopTracks()
+        }
+
+        findViewById<Button>(R.id.testPerformanceButton).setOnClickListener {
+            resultTextView.text = "Тестирование производительности API..."
+            viewModel.testApiPerformance(10)
+        }
+
+        viewModel.tracksResponse.observe(this) { response ->
+            try {
+                val gson = GsonBuilder().setPrettyPrinting().create()
+                val jsonString = gson.toJson(response)
+                resultTextView.text = "Результат запроса:\n$jsonString"
+            } catch (e: Exception) {
+                resultTextView.text = "Ошибка форматирования JSON: ${e.message}"
             }
         }
-    }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+        viewModel.error.observe(this) { error ->
+            resultTextView.text = "Ошибка: $error"
+        }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TuneHubsTheme {
-        Greeting("Android")
+        viewModel.performanceResults.observe(this) { results ->
+            resultTextView.text = results
+        }
     }
 }
