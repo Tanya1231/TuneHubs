@@ -9,7 +9,7 @@
         android:id="@+id/topTracksFragment"
         android:name="com.example.tunehubs.TopTracksFragment"
         android:label="TopTracksFragment"
-        tools:layout="@layout/fragment_top_tracks" >
+        tools:layout="@layout/fragment_top_tracks">
         <action
             android:id="@+id/action_topTracksFragment_to_trackDetailsFragment"
             app:destination="@id/trackDetailsFragment" />

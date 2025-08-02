@@ -59,23 +59,27 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.9.0") // Добавляет Retrofit
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // Добавляет Gson конвертер для Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // OkHttp для логирования запросов
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
     // Kotlin Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") // Core coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4") // Android coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
     // ViewModel и LiveData
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1") // ViewModel KTX
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")   // Lifecycle runtime KTX
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
 
     // Gson
     implementation("com.google.code.gson:gson:2.9.0")
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 }
