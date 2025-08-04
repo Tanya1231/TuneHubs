@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/topTracksFragment">
+
+    <fragment
+        android:id="@+id/topTracksFragment"
+        android:name="com.example.tunehubs.TopTracksFragment"
+        android:label="Top Tracks">
+
+        <action
+            android:id="@+id/actionTopTracksFragmentToTrackDetailsFragment"
+            app:destination="@id/trackDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/trackDetailsFragment"
+        android:name="com.example.tunehubs.TrackDetailsFragment"
+        android:label="Track Details">
+
+        <argument
+            android:name="trackName"
+            app:argType="string" />
+
+        <argument
+            android:name="artistName"
+            app:argType="string" />
+
+        <argument
+            android:name="imageUrl"
+            app:argType="string" />
+
+        <argument
+            android:name="description"
+            app:argType="string" />
+    </fragment>
+</navigation>

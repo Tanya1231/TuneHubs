@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.TuneHubs" parent="Theme.AppCompat.Light.DarkActionBar">
+    </style>
 
-    <style name="Theme.TuneHubs" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.TuneHubs" parent="Base.Theme.TuneHubs" />
 </resources>
