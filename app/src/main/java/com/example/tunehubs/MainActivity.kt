@@ -3,9 +3,7 @@ package com.example.tunehubs
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.navigation.fragment.NavHostFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,11 +13,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val bottomNavView: BottomNavigationView = findViewById(R.id.bottom_navigation)
-
-        bottomNavView.post { // Откладываем инициализацию
-            navController = findNavController(R.id.nav_host_fragment)
-            bottomNavView.setupWithNavController(navController)
-        }
+        // Находим NavHostFragment и получаем его NavController
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
     }
 }
