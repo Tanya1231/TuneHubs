@@ -1,5 +1,6 @@
 package com.example.tunehubs
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,20 +37,35 @@ class TrackAdapter(
         holder.trackName.text = track.name
         holder.artistName.text = track.artist.name
 
-        val imageUrl = track.image.firstOrNull { it.size == "large" }?.text
-            ?: track.image.firstOrNull()?.text
+        // Логируем размеры изображений для анализа
+        val imageSizes = track.image.map { it.size }
+        Log.d("TrackAdapter", "Image sizes: $imageSizes")
 
-        if (!imageUrl.isNullOrEmpty()) {
+        // Попытка найти изображение с размером 'extralarge', если нет - 'large'
+        val rawImageUrl = track.image.firstOrNull { it.size == "extralarge" }?.text
+            ?: track.image.firstOrNull { it.size == "large" }?.text
+
+        // Формируем полный URL изображения
+        val baseUrl = "https://lastfm.freetls.fastly.net"
+        val imageUrl = rawImageUrl?.let {
+            if (it.startsWith("http")) it else "$baseUrl$it"
+        } ?: ""
+
+        // Лог для проверки URL
+        Log.d("TrackAdapter", "Image URL: $imageUrl")
+
+        if (imageUrl.isNotEmpty()) {
             Glide.with(holder.itemView.context)
                 .load(imageUrl)
                 .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
                 .into(holder.trackImage)
         } else {
             holder.trackImage.setImageResource(R.drawable.ic_launcher_background)
         }
 
         holder.itemView.setOnClickListener {
-            // Запросить подробную информацию о треке и передать в детали
+            // Запросить подробную информацию о треке
             fragment.lifecycleScope.launch {
                 val response = RetrofitClient.apiService.getTrackInfo(track.artist.name, track.name)
                 val description =
@@ -59,8 +75,13 @@ class TrackAdapter(
                         "Нет описания"
                     }
 
-                // Получить изображение для деталей
-                val detailImageUrl = track.image.firstOrNull { it.size == "large" }?.text ?: ""
+                // Обработка изображения для деталей
+                val detailImageUrlRaw = track.image.firstOrNull { it.size == "extralarge" }?.text
+                    ?: track.image.firstOrNull { it.size == "large" }?.text
+
+                val detailImageUrl = detailImageUrlRaw?.let {
+                    if (it.startsWith("http")) it else "$baseUrl$it"
+                } ?: ""
 
                 val args =
                     TopTracksFragmentDirections.actionTopTracksFragmentToTrackDetailsFragment(

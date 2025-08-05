@@ -1,5 +1,7 @@
 package com.example.tunehubs.models
 
+import com.google.gson.annotations.SerializedName
+
 data class TrackInfoResponse(
     val track: TrackDetailInfo
 )
@@ -24,7 +26,7 @@ data class AlbumInfo(
 )
 
 data class ImageInfo(
-    val text: String,
+    @SerializedName("#text") val text: String,
     val size: String
 )
 
