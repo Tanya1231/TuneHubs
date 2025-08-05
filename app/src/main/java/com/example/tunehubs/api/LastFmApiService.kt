@@ -8,7 +8,10 @@ import retrofit2.http.Query
 
 interface LastFmApiService {
     @GET("2.0/?method=chart.gettoptracks&api_key=962cc9583cc6238050031519fd21a7ae&format=json")
-    suspend fun getTopTracks(@Query("limit") limit: Int = 10): Response<TopTracksResponse>
+    suspend fun getTopTracks(
+        @Query("limit") limit: Int = 10,
+        @Query("page") page: Int = 1
+    ): Response<TopTracksResponse>
 
     @GET("2.0/?method=track.getinfo&api_key=962cc9583cc6238050031519fd21a7ae&format=json")
     suspend fun getTrackInfo(

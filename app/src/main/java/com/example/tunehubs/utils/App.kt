@@ -1,9 +1,7 @@
-package com.example.tunehubs
+package com.example.tunehubs.utils
 
 import android.app.Application
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 
 class App : Application() {
     companion object {

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/topTracksFragment"
-        android:name="com.example.tunehubs.TopTracksFragment"
+        android:name="com.example.tunehubs.ui.TopTracksFragment"
         android:label="Top Tracks">
 
         <action
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/trackDetailsFragment"
-        android:name="com.example.tunehubs.TrackDetailsFragment"
+        android:name="com.example.tunehubs.ui.TrackDetailsFragment"
         android:label="Track Details">
 
         <argument

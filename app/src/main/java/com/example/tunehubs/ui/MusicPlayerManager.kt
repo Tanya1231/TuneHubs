@@ -1,4 +1,4 @@
-package com.example.tunehubs
+package com.example.tunehubs.ui
 
 import android.media.MediaPlayer
 import com.example.tunehubtest.models.Track
@@ -8,7 +8,6 @@ object MusicPlayerManager {
     private var playlist: List<Track> = emptyList()
     private var currentIndex: Int = -1
 
-    // Объявим интерфейс слушателя для обновлений UI
     interface PlayerStateListener {
         fun onTrackChanged(track: Track)
         fun onPlaybackStateChanged(isPlaying: Boolean)

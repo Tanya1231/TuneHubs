@@ -1,4 +1,4 @@
-package com.example.tunehubs
+package com.example.tunehubs.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -9,6 +9,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.example.tunehubs.utils.App
+import com.example.tunehubs.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +27,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Пример использования проверки сети
         if (App.isNetworkAvailable()) {
             // сеть есть
         } else {
@@ -36,8 +37,16 @@ class MainActivity : AppCompatActivity() {
     private fun checkAndRequestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val permission = Manifest.permission.ACCESS_NETWORK_STATE
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_CODE_PERMISSIONS)
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(permission),
+                    REQUEST_CODE_PERMISSIONS
+                )
             }
         }
     }
@@ -50,9 +59,7 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Разрешение получено, можно продолжать работу
             } else {
-                // Пользователь отклонил разрешение
             }
         }
     }

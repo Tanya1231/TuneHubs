@@ -1,10 +1,11 @@
-package com.example.tunehubs
+package com.example.tunehubs.ui
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.tunehubs.R
 
 class SettingsFragment : Fragment() {
     override fun onCreateView(

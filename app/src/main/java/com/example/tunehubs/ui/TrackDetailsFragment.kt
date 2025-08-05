@@ -1,4 +1,4 @@
-package com.example.tunehubs
+package com.example.tunehubs.ui
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.tunehubs.R
 
 class TrackDetailsFragment : Fragment() {
 
