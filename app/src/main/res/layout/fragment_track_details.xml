@@ -18,33 +18,35 @@
             android:id="@+id/track_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:background="@drawable/rounded_image_bg" />
+            android:background="@drawable/rounded_image_bg"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/track_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textColor="#222"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#222" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/artist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="16sp"
-            android:textColor="#555" />
+            android:textColor="#555"
+            android:textSize="16sp" />
 
+        <!-- Описание с прокруткой -->
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:textColor="#777" />
+            android:scrollbars="vertical"
+            android:textColor="#777"
+            android:textSize="14sp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
