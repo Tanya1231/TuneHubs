@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.fragment.navArgs
@@ -25,21 +26,29 @@ class TrackDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Установка текста
-        view.findViewById<TextView>(R.id.track_name).text = args.trackName
-        view.findViewById<TextView>(R.id.artist_name).text = args.artistName
+        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_slide)
+
+        // Установка текста и запуск анимации
+        val trackName = view.findViewById<TextView>(R.id.track_name)
+        trackName.text = args.trackName
+        trackName.startAnimation(animation)
+
+        val artistName = view.findViewById<TextView>(R.id.artist_name)
+        artistName.text = args.artistName
+        artistName.startAnimation(animation)
+
         val descriptionTextView = view.findViewById<TextView>(R.id.description)
         descriptionTextView.text = args.description
-
-        // Установка прокрутки
         descriptionTextView.movementMethod = android.text.method.ScrollingMovementMethod()
+        descriptionTextView.startAnimation(animation)
 
-        // Загрузка изображения
+        // Анимация для изображения
         val imageView = view.findViewById<ImageView>(R.id.track_image)
         if (args.imageUrl.isNotEmpty()) {
             Glide.with(this).load(args.imageUrl).into(imageView)
         } else {
             imageView.setImageResource(R.drawable.ic_launcher_background)
         }
+        imageView.startAnimation(animation)
     }
 }
