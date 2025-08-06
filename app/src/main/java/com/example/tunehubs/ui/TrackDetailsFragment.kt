@@ -1,11 +1,13 @@
 package com.example.tunehubs.ui
 
+import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.fragment.navArgs
@@ -28,7 +30,6 @@ class TrackDetailsFragment : Fragment() {
 
         val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_slide)
 
-        // Установка текста и запуск анимации
         val trackName = view.findViewById<TextView>(R.id.track_name)
         trackName.text = args.trackName
         trackName.startAnimation(animation)
@@ -42,7 +43,6 @@ class TrackDetailsFragment : Fragment() {
         descriptionTextView.movementMethod = android.text.method.ScrollingMovementMethod()
         descriptionTextView.startAnimation(animation)
 
-        // Анимация для изображения
         val imageView = view.findViewById<ImageView>(R.id.track_image)
         if (args.imageUrl.isNotEmpty()) {
             Glide.with(this).load(args.imageUrl).into(imageView)
@@ -50,5 +50,27 @@ class TrackDetailsFragment : Fragment() {
             imageView.setImageResource(R.drawable.ic_launcher_background)
         }
         imageView.startAnimation(animation)
+
+        val shareButton = view.findViewById<Button>(R.id.button_share)
+        shareButton.setOnClickListener {
+            shareTrack()
+        }
+    }
+
+    private fun shareTrack() {
+        val shareText = """
+            Послушайте этот трек:
+            Название: ${args.trackName}
+            Исполнитель: ${args.artistName}
+            Описание: ${args.description}
+            Посмотреть изображение: ${args.imageUrl}
+        """.trimIndent()
+
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, shareText)
+            type = "text/plain"
+        }
+        startActivity(Intent.createChooser(intent, "Поделиться треком"))
     }
 }
