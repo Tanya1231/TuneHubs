@@ -1,4 +1,4 @@
-package com.example.tunehubs
+package com.example.tunehubs.ui
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.example.tunehubs.R
 
 class TrackDetailsFragment : Fragment() {
 
@@ -24,15 +25,17 @@ class TrackDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val trackNameTextView: TextView = view.findViewById(R.id.track_name)
-        val artistNameTextView: TextView = view.findViewById(R.id.artist_name)
-        val descriptionTextView: TextView = view.findViewById(R.id.description)
-        val imageView: ImageView = view.findViewById(R.id.track_image)
+        // Установка текста
+        view.findViewById<TextView>(R.id.track_name).text = args.trackName
+        view.findViewById<TextView>(R.id.artist_name).text = args.artistName
+        val descriptionTextView = view.findViewById<TextView>(R.id.description)
+        descriptionTextView.text = args.description
 
-        trackNameTextView.text = args.trackName
-        artistNameTextView.text = args.artistName
-        descriptionTextView.text = args.description ?: "Нет описания"
+        // Установка прокрутки
+        descriptionTextView.movementMethod = android.text.method.ScrollingMovementMethod()
 
+        // Загрузка изображения
+        val imageView = view.findViewById<ImageView>(R.id.track_image)
         if (args.imageUrl.isNotEmpty()) {
             Glide.with(this).load(args.imageUrl).into(imageView)
         } else {
