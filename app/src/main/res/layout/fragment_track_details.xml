@@ -6,7 +6,7 @@
     android:layout_margin="16dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
-    app:useCompatPadding="true">
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,15 +38,25 @@
             android:textColor="#555"
             android:textSize="16sp" />
 
-        <!-- Описание с прокруткой -->
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_marginTop="8dp"
             android:scrollbars="vertical"
             android:textColor="#777"
             android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/button_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Поделиться"
+            android:background="@drawable/rounded_button"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:paddingVertical="12dp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
