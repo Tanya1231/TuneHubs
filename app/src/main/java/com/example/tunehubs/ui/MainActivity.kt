@@ -1,11 +1,11 @@
 package com.example.tunehubs.ui
 
-import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -18,6 +18,11 @@ class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE_PERMISSIONS = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Читаем сохранённую тему и применяем её
+        val prefs = getSharedPreferences("settings", MODE_PRIVATE)
+        val themeMode = prefs.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        AppCompatDelegate.setDefaultNightMode(themeMode)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -26,6 +31,27 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
+        // Обработка кнопки переключения темы
+        val toggleThemeButton = findViewById<Button>(R.id.button_toggle_theme)
+        toggleThemeButton.setOnClickListener {
+            val currentMode = AppCompatDelegate.getDefaultNightMode()
+            val newMode = if (currentMode == AppCompatDelegate.MODE_NIGHT_YES) {
+                AppCompatDelegate.MODE_NIGHT_NO
+            } else {
+                AppCompatDelegate.MODE_NIGHT_YES
+            }
+
+            // Сохраняем выбранную тему
+            with(prefs.edit()) {
+                putInt("theme_mode", newMode)
+                apply()
+            }
+
+            // Устанавливаем режим и перезагружаем активити
+            AppCompatDelegate.setDefaultNightMode(newMode)
+            recreate()
+        }
 
         if (App.isNetworkAvailable()) {
             // сеть есть
@@ -36,17 +62,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAndRequestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val permission = Manifest.permission.ACCESS_NETWORK_STATE
+            val permission = android.Manifest.permission.ACCESS_NETWORK_STATE
             if (ContextCompat.checkSelfPermission(
                     this,
                     permission
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(permission),
-                    REQUEST_CODE_PERMISSIONS
-                )
+                // Запрос разрешения
+                requestPermissions(arrayOf(permission), REQUEST_CODE_PERMISSIONS)
             }
         }
     }

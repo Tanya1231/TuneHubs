@@ -2,10 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F0F0F5">
+    android:layout_height="match_parent">
 
-    <!-- Навигационный контейнер -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -18,7 +16,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_graph" />
 
-    <!-- Мини-плеер -->
+    <Button
+        android:id="@+id/button_toggle_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableBottom="@drawable/ic_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/mini_player_container"
         android:layout_width="match_parent"
@@ -33,20 +39,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Текущий трек -->
-        <TextView
-            android:id="@+id/mini_current_track"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:paddingBottom="8dp"
-            android:text="Текущий трек"
-            android:textColor="#222"
-            android:textSize="14sp" />
-
-        <!-- Контейнер управления -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,7 +46,6 @@
             android:orientation="horizontal"
             android:weightSum="4">
 
-            <!-- Предыдущий -->
             <ImageButton
                 android:id="@+id/btn_previous"
                 android:layout_width="48dp"
@@ -62,9 +53,8 @@
                 android:background="@drawable/rounded_icon_bg"
                 android:contentDescription="Previous"
                 android:src="@drawable/ic_skip_previous"
-                android:tint="#333" />
+                app:tint="#333" />
 
-            <!-- Плей/Пауза -->
             <ImageButton
                 android:id="@+id/btn_play_pause"
                 android:layout_width="64dp"
@@ -74,9 +64,8 @@
                 android:background="@drawable/rounded_icon_bg"
                 android:contentDescription="Play/Pause"
                 android:src="@drawable/ic_play_arrow"
-                android:tint="#333" />
+                app:tint="#333" />
 
-            <!-- Следующий -->
             <ImageButton
                 android:id="@+id/btn_next"
                 android:layout_width="48dp"
@@ -84,7 +73,7 @@
                 android:background="@drawable/rounded_icon_bg"
                 android:contentDescription="Next"
                 android:src="@drawable/ic_skip_next"
-                android:tint="#333" />
+                app:tint="#333" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

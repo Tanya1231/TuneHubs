@@ -26,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="#222"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -35,7 +34,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="#555"
             android:textSize="16sp" />
 
         <TextView
@@ -44,39 +42,30 @@
             android:layout_height="100dp"
             android:layout_marginTop="8dp"
             android:scrollbars="vertical"
-            android:textColor="#777"
             android:textSize="14sp" />
 
-        <!-- Контейнер для кнопок -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
             android:gravity="center"
-            android:layout_marginTop="16dp">
+            android:orientation="horizontal">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_share"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Поделиться"
-                android:background="@drawable/rounded_button"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:paddingVertical="12dp" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="70dp"
+                android:background="@drawable/to_share"
+                android:paddingVertical="10dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_remind"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Напомнить"
-                android:background="@drawable/rounded_button"
-                android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:paddingVertical="12dp"
-                android:layout_marginStart="8dp" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/ic_later"
+                android:paddingVertical="10dp" />
 
         </LinearLayout>
 

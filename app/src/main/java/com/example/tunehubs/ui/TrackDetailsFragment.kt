@@ -130,7 +130,6 @@ class TrackDetailsFragment : Fragment() {
             set(Calendar.SECOND, 0)
         }
 
-        // если выбранное время уже прошло сегодня, добавим сутки
         if (calendar.timeInMillis <= System.currentTimeMillis()) {
             calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
@@ -141,6 +140,10 @@ class TrackDetailsFragment : Fragment() {
             pendingIntent
         )
 
-        Toast.makeText(requireContext(), "Напоминание установлено на $hour:$minute", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            requireContext(),
+            "Напоминание установлено на $hour:$minute",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
