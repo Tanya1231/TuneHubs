@@ -1,5 +1,8 @@
 package com.example.tunehubs.ui
 
+import android.annotation.SuppressLint
+import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -13,6 +16,11 @@ import android.widget.TextView
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.tunehubs.R
+import java.util.Calendar
+import com.example.tunehubs.NotificationReceiver
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.widget.Toast
 
 class TrackDetailsFragment : Fragment() {
 
@@ -52,8 +60,14 @@ class TrackDetailsFragment : Fragment() {
         imageView.startAnimation(animation)
 
         val shareButton = view.findViewById<Button>(R.id.button_share)
+        val remindButton = view.findViewById<Button>(R.id.button_remind)
+
         shareButton.setOnClickListener {
             shareTrack()
+        }
+
+        remindButton.setOnClickListener {
+            showTimePicker()
         }
     }
 
@@ -72,5 +86,61 @@ class TrackDetailsFragment : Fragment() {
             type = "text/plain"
         }
         startActivity(Intent.createChooser(intent, "Поделиться треком"))
+    }
+
+    private fun showTimePicker() {
+        val calendar = Calendar.getInstance()
+
+        val timePicker = TimePickerDialog(
+            requireContext(),
+            { _, hourOfDay, minute ->
+                scheduleNotification(hourOfDay, minute)
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            true
+        )
+        timePicker.show()
+    }
+
+    @SuppressLint("ScheduleExactAlarm")
+    private fun scheduleNotification(hour: Int, minute: Int) {
+        val context = requireContext()
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(context, NotificationReceiver::class.java).apply {
+            putExtra("trackName", args.trackName)
+            putExtra("artistName", args.artistName)
+            putExtra("description", args.description)
+            putExtra("imageUrl", args.imageUrl)
+        }
+
+        val pendingIntentId = System.currentTimeMillis().toInt()
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            pendingIntentId,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+            set(Calendar.SECOND, 0)
+        }
+
+        // если выбранное время уже прошло сегодня, добавим сутки
+        if (calendar.timeInMillis <= System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent
+        )
+
+        Toast.makeText(requireContext(), "Напоминание установлено на $hour:$minute", Toast.LENGTH_SHORT).show()
     }
 }

@@ -47,16 +47,38 @@
             android:textColor="#777"
             android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/button_share"
+        <!-- Контейнер для кнопок -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Поделиться"
-            android:background="@drawable/rounded_button"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:paddingVertical="12dp" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/button_share"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Поделиться"
+                android:background="@drawable/rounded_button"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:paddingVertical="12dp" />
+
+            <Button
+                android:id="@+id/button_remind"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Напомнить"
+                android:background="@drawable/rounded_button"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:paddingVertical="12dp"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
