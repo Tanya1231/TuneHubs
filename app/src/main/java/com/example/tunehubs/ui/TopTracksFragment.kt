@@ -40,7 +40,6 @@ class TopTracksFragment : Fragment() {
         adapter = TrackAdapter(tracks, this)
         recyclerView.adapter = adapter
 
-        // Обработка прокрутки для пагинации
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(rv, dx, dy)
@@ -55,7 +54,6 @@ class TopTracksFragment : Fragment() {
             }
         })
 
-        // Наблюдение за данными
         viewModel.tracksResponse.observe(viewLifecycleOwner) { response ->
             response?.let {
                 val newTracks = it.tracks.track
@@ -68,7 +66,6 @@ class TopTracksFragment : Fragment() {
             }
         }
 
-        // Начальная загрузка
         loadMoreTracks()
     }
 

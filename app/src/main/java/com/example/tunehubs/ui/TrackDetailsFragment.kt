@@ -17,7 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.tunehubs.R
 import java.util.Calendar
-import com.example.tunehubs.NotificationReceiver
+import com.example.tunehubs.receiver.NotificationReceiver
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.widget.Toast

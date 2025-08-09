@@ -29,8 +29,7 @@ object MusicPlayerManager {
         mediaPlayer = MediaPlayer().apply {
             setDataSource(track.url)
             prepareAsync()
-            setOnPreparedListener {
-                it.start()
+            setOnPreparedListener {                it.start()
                 listener?.onTrackChanged(track)
                 listener?.onPlaybackStateChanged(true)
             }

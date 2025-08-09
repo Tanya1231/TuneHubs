@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE_PERMISSIONS = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Читаем сохранённую тему и применяем её
         val prefs = getSharedPreferences("settings", MODE_PRIVATE)
         val themeMode = prefs.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         AppCompatDelegate.setDefaultNightMode(themeMode)
@@ -32,7 +31,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Обработка кнопки переключения темы
         val toggleThemeButton = findViewById<Button>(R.id.button_toggle_theme)
         toggleThemeButton.setOnClickListener {
             val currentMode = AppCompatDelegate.getDefaultNightMode()
@@ -42,13 +40,11 @@ class MainActivity : AppCompatActivity() {
                 AppCompatDelegate.MODE_NIGHT_YES
             }
 
-            // Сохраняем выбранную тему
             with(prefs.edit()) {
                 putInt("theme_mode", newMode)
                 apply()
             }
 
-            // Устанавливаем режим и перезагружаем активити
             AppCompatDelegate.setDefaultNightMode(newMode)
             recreate()
         }
@@ -68,7 +64,6 @@ class MainActivity : AppCompatActivity() {
                     permission
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                // Запрос разрешения
                 requestPermissions(arrayOf(permission), REQUEST_CODE_PERMISSIONS)
             }
         }

@@ -33,7 +33,6 @@ class MusicViewModel(private val repository: MusicRepository = MusicRepository()
                     val newTracks = response.tracks.track
 
                     if (page == 1) {
-                        // Первая страница
                         _tracksResponse.value = response
                     } else {
                         val combinedTracks = currentTracks + newTracks
