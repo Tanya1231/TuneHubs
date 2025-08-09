@@ -26,5 +26,5 @@ Main features:
 
 Technologies: Kotlin, Retrofit, OkHttp, Gson, LiveData, ViewModel, Navigation, Glide, Notifications
 
-![screenshots](app.src.main.res.drawable/mobile_1.png)
-![screenshots](app.src.main.res.drawable/mobile_2.png)
+![screenshots](images/mobile_1.png)
+![screenshots](images/mobile_2.png)
