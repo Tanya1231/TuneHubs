@@ -1,6 +1,7 @@
 package com.example.tunehubtest.models
 
-// Модель для ответа top tracks
+import com.google.gson.annotations.SerializedName
+
 data class TopTracksResponse(
     val tracks: Tracks
 )
@@ -23,6 +24,6 @@ data class Artist(
 )
 
 data class Image(
-    val text: String,
+    @SerializedName("#text") val text: String,
     val size: String
 )

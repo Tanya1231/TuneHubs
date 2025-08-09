@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TuneHubs</string>
+    <string name="previous">Previous</string>
+    <string name="play_pause">Play/Pause</string>
+    <string name="next">Next</string>
+    <string name="track_image">Track Image</string>
+    <string name="track_name">Track Name</string>
+    <string name="artist_name">Artist Name</string>
 </resources>

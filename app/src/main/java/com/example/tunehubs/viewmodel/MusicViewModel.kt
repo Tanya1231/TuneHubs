@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tunehub.repository.MusicRepository
 import com.example.tunehubs.models.TrackDetailInfo
 import com.example.tunehubtest.models.TopTracksResponse
+import com.example.tunehubtest.models.Tracks
 import kotlinx.coroutines.launch
 
 class MusicViewModel(private val repository: MusicRepository = MusicRepository()) : ViewModel() {
@@ -23,15 +24,22 @@ class MusicViewModel(private val repository: MusicRepository = MusicRepository()
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
-    private val _performanceResults = MutableLiveData<String>()
-    val performanceResults: LiveData<String> = _performanceResults
-
-    fun loadTopTracks(limit: Int = 10) {
+    fun loadTopTracks(limit: Int = 10, page: Int = 1) {
         _loading.value = true
         viewModelScope.launch {
-            repository.getTopTracks(limit).fold(
+            repository.getTopTracks(limit, page).fold(
                 onSuccess = { response ->
-                    _tracksResponse.value = response
+                    val currentTracks = _tracksResponse.value?.tracks?.track ?: emptyList()
+                    val newTracks = response.tracks.track
+
+                    if (page == 1) {
+                        _tracksResponse.value = response
+                    } else {
+                        val combinedTracks = currentTracks + newTracks
+                        _tracksResponse.value = TopTracksResponse(
+                            tracks = Tracks(track = combinedTracks)
+                        )
+                    }
                     _loading.value = false
                 },
                 onFailure = { e ->
@@ -55,20 +63,6 @@ class MusicViewModel(private val repository: MusicRepository = MusicRepository()
                     _loading.value = false
                 }
             )
-        }
-    }
-
-    fun testApiPerformance(iterations: Int) {
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val result = repository.testApiPerformance(iterations)
-                _performanceResults.value = result
-            } catch (e: Exception) {
-                _error.value = "Ошибка при тестировании: ${e.message}"
-            } finally {
-                _loading.value = false
-            }
         }
     }
 }

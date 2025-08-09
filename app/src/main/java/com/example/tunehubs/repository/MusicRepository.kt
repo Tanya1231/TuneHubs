@@ -3,20 +3,35 @@ package com.example.tunehub.repository
 import com.example.tunehubs.api.RetrofitClient
 import com.example.tunehubs.models.TrackInfoResponse
 import com.example.tunehubtest.models.TopTracksResponse
+import com.google.gson.Gson
 import java.io.IOException
 
 class MusicRepository {
     private val apiService = RetrofitClient.apiService
+    private val okHttpClient = RetrofitClient.okHttpClient
 
-    suspend fun getTopTracks(limit: Int = 10): Result<TopTracksResponse> {
+    suspend fun getTopTracks(limit: Int = 10, page: Int = 1): Result<TopTracksResponse> {
         return try {
-            val response = apiService.getTopTracks(limit = limit)
+            val response = apiService.getTopTracks(limit, page)
             if (response.isSuccessful) {
                 response.body()?.let {
-                    Result.success(it)
-                } ?: Result.failure(IOException("Response body is null"))
+                    return Result.success(it)
+                } ?: return Result.failure(IOException("Ответ пустой"))
             } else {
-                Result.failure(IOException("API call failed with code: ${response.code()}"))
+                // Попытка взять из кеша при ошибке
+                val request = response.raw().request.newBuilder()
+                    .header("Cache-Control", "public, only-if-cached, max-stale=86400")
+                    .build()
+
+                val cachedResponse = okHttpClient.newCall(request).execute()
+                if (cachedResponse.isSuccessful) {
+                    val cachedBodyString = cachedResponse.body?.string()
+                    val cachedBody =
+                        Gson().fromJson(cachedBodyString, TopTracksResponse::class.java)
+                    Result.success(cachedBody)
+                } else {
+                    Result.failure(IOException("Нет данных в кеше и сеть недоступна"))
+                }
             }
         } catch (e: Exception) {
             Result.failure(e)
@@ -25,48 +40,28 @@ class MusicRepository {
 
     suspend fun getTrackInfo(artist: String, track: String): Result<TrackInfoResponse> {
         return try {
-            val response = apiService.getTrackInfo(artist = artist, track = track)
+            val response = apiService.getTrackInfo(artist, track)
             if (response.isSuccessful) {
                 response.body()?.let {
-                    Result.success(it)
-                } ?: Result.failure(IOException("Response body is null"))
+                    return Result.success(it)
+                } ?: return Result.failure(IOException("Ответ пустой"))
             } else {
-                Result.failure(IOException("API call failed with code: ${response.code()}"))
+                val request = response.raw().request.newBuilder()
+                    .header("Cache-Control", "public, only-if-cached, max-stale=86400")
+                    .build()
+
+                val cachedResponse = okHttpClient.newCall(request).execute()
+                if (cachedResponse.isSuccessful) {
+                    val cachedBodyString = cachedResponse.body?.string()
+                    val cachedBody =
+                        Gson().fromJson(cachedBodyString, TrackInfoResponse::class.java)
+                    Result.success(cachedBody)
+                } else {
+                    Result.failure(IOException("Нет данных в кеше и сеть недоступна"))
+                }
             }
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
-
-    suspend fun testApiPerformance(iterations: Int): String {
-        val startTime = System.currentTimeMillis()
-        var successCount = 0
-        var failCount = 0
-
-        repeat(iterations) {
-            try {
-                val response = apiService.getTopTracks()
-                if (response.isSuccessful) {
-                    successCount++
-                } else {
-                    failCount++
-                }
-            } catch (e: Exception) {
-                failCount++
-            }
-        }
-
-        val totalTime = System.currentTimeMillis() - startTime
-        val avgTime = totalTime / iterations.toFloat()
-
-        return """
-            Performance Test Results:
-            ------------------------
-            Iterations: $iterations
-            Successful requests: $successCount
-            Failed requests: $failCount
-            Total time: ${totalTime}ms
-            Average time per request: ${avgTime}ms
-        """.trimIndent()
     }
 }
